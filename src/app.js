@@ -3,7 +3,7 @@ const app = express();
 const { Musician } = require("../models/index");
 const { db } = require("../db/connection");
 
-const port = 3001;
+const port = 3004;
 
 //TODO: Create a GET /musicians route to return all musicians
 db.sync()
