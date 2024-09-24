@@ -5,6 +5,7 @@ const { db } = require("../db/connection");
 
 const port = 3004;
 app.use(express.json());
+app.use(express.urlencoded());
 //TODO: Create a GET /musicians route to return all musicians
 db.sync()
   .then(() => {
@@ -29,7 +30,12 @@ app.get("/musicians/:id", async (req, res) => {
   res.json(findMusician);
 });
 
-
+app.post("/musicians", async (req, res) => {
+  const updateData = req.body;
+  const newMusician = await Musician.create(updateData);
+  const allMusicans = await Musician.findAll();
+  res.status(200).json(allMusicans);
+});
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
