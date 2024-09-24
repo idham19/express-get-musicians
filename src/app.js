@@ -28,6 +28,8 @@ app.get("/musicians/:id", async (req, res) => {
   const findMusician = await Musician.findByPk(musicianId);
   res.json(findMusician);
 });
+
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
