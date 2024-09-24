@@ -27,6 +27,7 @@ describe("./musicians endpoint", () => {
     expect(responseData[0].name).toEqual(seedMusician[0].name);
   });
 
+  //Get method using Id test
   test("getting musicians by Id", async () => {
     const musicianId = 1;
     const findMusician = await request(app).get(`/musicians/${musicianId}`);
@@ -34,14 +35,29 @@ describe("./musicians endpoint", () => {
     expect(findMusician.body.name).toEqual(seedMusician[0].name);
   });
 
+  //Post Method test
   test("Post New Musician", async () => {
     const updateData = {
       name: "jo",
       intrument: "guitar",
     };
     const newMusician = await request(app).post("/musicians").send(updateData);
-    
     expect(newMusician.statusCode).toBe(201);
     expect(newMusician.body.name).toEqual(updateData.name);
+  });
+
+  //Put Method test
+  test("update musician", async () => {
+    const updateData = {
+      name: "lora",
+      instrument: "voice",
+    };
+    const musicianId = 1;
+    const findMusician = await request(app)
+      .put(`/musicians/${musicianId}`)
+      .send(updateData);
+    expect(findMusician.statusCode).toBe(200);
+    expect(findMusician.body.name).toBe(updateData.name);
+    expect(findMusician.body.instrument).toBe(updateData.instrument);
   });
 });

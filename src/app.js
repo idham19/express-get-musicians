@@ -34,8 +34,21 @@ app.post("/musicians", async (req, res) => {
   const updateData = req.body;
   const newMusician = await Musician.create(updateData);
   const allMusicans = await Musician.findAll();
-  res.json(newMusician);
+  res.status(201).json(newMusician);
 });
+
+app.put("/musicians/:id",async(req,res,next)=>{
+  try {
+    const musicianId = req.params.id;
+    const updateDate = req.body;
+    const findMusician = await Musician.findByPk(musicianId);
+    await findMusician.update(updateDate);
+    res.json(findMusician)
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+})
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
