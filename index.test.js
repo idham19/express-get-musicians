@@ -60,4 +60,21 @@ describe("./musicians endpoint", () => {
     expect(findMusician.body.name).toBe(updateData.name);
     expect(findMusician.body.instrument).toBe(updateData.instrument);
   });
+
+  test("should delete a musician", async () => {
+    // Create a musician first (assuming you have a POST endpoint for that)
+    const createdMusician = await request(app)
+      .post("/musicians")
+      .send({ name: "John Doe", instrument: "Guitar" })
+      .expect(201)
+      .then((res) => res.body);
+
+    // Delete the newly created musician
+    const response = await request(app)
+      .delete(`/musicians/${createdMusician.id}`)
+      .expect(200);
+
+    // Assertions
+    expect(response.body.message).toBe("Musician deleted successfully");
+  });
 });

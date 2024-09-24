@@ -37,18 +37,32 @@ app.post("/musicians", async (req, res) => {
   res.status(201).json(newMusician);
 });
 
-app.put("/musicians/:id",async(req,res,next)=>{
+app.put("/musicians/:id", async (req, res, next) => {
   try {
     const musicianId = req.params.id;
     const updateDate = req.body;
     const findMusician = await Musician.findByPk(musicianId);
     await findMusician.update(updateDate);
-    res.json(findMusician)
+    res.json(findMusician);
   } catch (error) {
     console.error(error);
     next(error);
   }
-})
+});
+
+//Delete Method
+app.delete("/musicians/:id", async (req, res, next) => {
+  try {
+    const muscianId = req.params.id;
+    const findMusician = await Musician.findByPk(muscianId);
+    await findMusician.destroy();
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
