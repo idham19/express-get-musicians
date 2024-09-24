@@ -33,4 +33,15 @@ describe("./musicians endpoint", () => {
     expect(findMusician.statusCode).toBe(200);
     expect(findMusician.body.name).toEqual(seedMusician[0].name);
   });
+
+  test("Post New Musician", async () => {
+    const updateData = {
+      name: "jo",
+      intrument: "guitar",
+    };
+    const newMusician = await request(app).post("/musicians").send(updateData);
+    
+    expect(newMusician.statusCode).toBe(201);
+    expect(newMusician.body.name).toEqual(updateData.name);
+  });
 });

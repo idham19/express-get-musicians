@@ -34,7 +34,7 @@ app.post("/musicians", async (req, res) => {
   const updateData = req.body;
   const newMusician = await Musician.create(updateData);
   const allMusicans = await Musician.findAll();
-  res.status(200).json(allMusicans);
+  res.json(newMusician);
 });
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
