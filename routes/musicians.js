@@ -1,5 +1,6 @@
 const express = require("express");
 const Musician = require("../models/Musician");
+const Band = require("../models/Band");
 
 const route = express.Router();
 
@@ -22,11 +23,38 @@ route.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
+// route.post("/", async (req, res, next) => {
+//   try {
+//     const updateData = req.body;
+//     const createNewUser = await Musician.create(updateData);
+//     res.json(createNewUser);
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// });
 route.post("/", async (req, res, next) => {
   try {
-    const updateData = req.body;
-    const createNewUser = await Musician.create(updateData);
-    res.json(createNewUser);
+    const { name, instrument, bandId } = req.body;
+
+    // Ensure the bandId is provided
+    if (!bandId) {
+      return res.status(400).json({ error: "bandId is required" });
+    }
+
+    // Find the band by id
+    const band = await Band.findByPk(bandId);
+    if (!band) {
+      return res.status(404).json({ error: "Band not found" });
+    }
+
+    // Create the musician instance
+    const newMusician = await Musician.create({ name, instrument });
+
+    // Set the bandId for the musician
+    await newMusician.setBand(band); // associate the newMusician with the band 
+
+    res.status(201).json(newMusician);
   } catch (error) {
     console.error(error);
     next(error);
@@ -57,7 +85,4 @@ route.delete("/:id", async (req, res, next) => {
   }
 });
 
-
-
-
-module.exports=route
+module.exports = route;

@@ -9,7 +9,6 @@ route.get("/", async (req, res, next) => {
   try {
     const allBands = await Band.findAll({ include: Musician });
     res.json(allBands);
-    console.log(JSON.stringify(allBands, null, 2));
   } catch (error) {
     console.error(error);
     next(error);
@@ -18,7 +17,7 @@ route.get("/", async (req, res, next) => {
 route.get("/:id", async (req, res, next) => {
   try {
     const bandId = req.params.id;
-    const findBand = await Band.findByPk(bandId);
+    const findBand = await Band.findByPk(bandId, { include: Musician });
     res.json(findBand);
   } catch (error) {
     console.error(error);
@@ -35,6 +34,8 @@ route.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+
 route.put("/:id", async (req, res, next) => {
   try {
     const updateData = req.body;
